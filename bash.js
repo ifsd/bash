@@ -1,9 +1,16 @@
-process.stdout.write("prompt > ");
-process.stdin.on("data", (data) => {
-  const cmd = data.toString().trim();
-  //   process.stdout.write("you typed:" + cmd);
-  if (cmd === "pwd") {
-    process.stdout.write(`this the directory ${process.cwd()}`);
-  }
-  process.stdout.write("\nprompt > ");
+const pwd = require('./pwd');
+const ls = require('./ls');
+const cat = require('./cat');
+const fs = require('fs');
+
+process.stdout.write('prompt > ');
+process.stdin.on('data', (data) => {
+  //data === 'cat bash.js'
+  const input = data.toString().trim().split(' ');
+  const cmd = input[0];
+  const fileName = input[1];
+
+  if (cmd === 'pwd') pwd();
+  if (cmd === 'ls') fs.readdir('./', 'utf8', ls);
+  if (cmd === 'cat') fs.readFile(fileName, cat);
 });
